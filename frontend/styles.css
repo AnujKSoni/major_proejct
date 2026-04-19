@@ -1,0 +1,280 @@
+/* Tight constraints to prevent elements from escaping the screen area */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', 'Inter', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f3f4f6;
+    color: #1f2937;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden; /* Prevents runaway elements from breaking layout */
+}
+
+.dashboard-container {
+    width: 100%;
+    max-width: 1100px; /* Slightly wider dashboard constraint */
+    margin: 2rem auto;
+    padding: 2rem;
+    overflow: hidden; /* Tightly bounds all child elements */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Header Redesign to match image_0.png */
+.dashboard-header {
+    background: white;
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.dashboard-header h1 {
+    font-size: 1.75rem;
+    color: #0f172a;
+    margin: 0;
+    font-weight: 700;
+}
+
+.header-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: flex-end;
+    max-width: 60%;
+}
+
+.dashboard-header input {
+    flex-grow: 1;
+    max-width: 400px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #f8fafc;
+}
+
+.dashboard-header button {
+    padding: 0.75rem 1.5rem;
+    background-color: #3b82f6; /* Bright blue from image_0.png */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    transform: none !important; /* Locks button during interaction */
+}
+
+.dashboard-header button:hover {
+    background-color: #2563eb;
+}
+
+.header-loading {
+    position: absolute;
+    bottom: -30px;
+    right: 2rem;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Redesigned Cards to match image_0.png color palette */
+.summary-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid transparent;
+    transition: border-color 0.2s ease;
+    max-width: 100%;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-header h2 {
+    font-size: 1rem;
+    color: #475569;
+    font-weight: 600;
+    margin: 0;
+}
+
+.card-value {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+}
+
+.demo-note {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    font-style: italic;
+    margin: 0.25rem 0 0 0;
+}
+
+/* Card Specific Styling (Matches colors of image_0.png) */
+.total-cycles-card {
+    background-color: #eff6ff; /* Soft blue background */
+    border-color: #bfdbfe;
+}
+.list-icon { 
+    width: 20px; height: 16px; 
+    border-top: 2px solid #3b82f6; border-bottom: 2px solid #3b82f6;
+    background: repeating-linear-gradient(#3b82f6, #3b82f6 2px, transparent 2px, transparent 4px);
+}
+
+.failure-cycles-card {
+    background-color: #fefce8; /* Soft yellow background */
+    border-color: #fef08a;
+}
+.failure-cycles-card .card-value { color: #854d0e; }
+.warning-icon {
+    width: 0; height: 0; 
+    border-left: 10px solid transparent; border-right: 10px solid transparent;
+    border-bottom: 20px solid #eab308;
+}
+
+.rul-card {
+    background-color: #f0fdf4; /* Soft green background */
+    border-color: #bbf7d0;
+}
+.rul-card .card-value { color: #166534; }
+.rul-card .unit { font-size: 1rem; font-weight: 600; color: #166534; }
+.clock-icon {
+    width: 20px; height: 20px; 
+    border-radius: 50%; border: 3px solid #166534;
+    position: relative;
+}
+.clock-icon::after {
+    content: ''; position: absolute;
+    width: 8px; height: 2px; background: #166534;
+    top: 6px; left: 8px; transform: rotate(-45deg);
+}
+
+/* Status colors applied to RUL card dynamically based on prediction */
+.status-healthy { border: 2px solid #22c55e; }
+.status-warning { border: 2px solid #eab308; }
+.status-critical { border: 2px solid #ef4444; }
+
+/* Main Chart Panel Redesign */
+.chart-section .panel {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.chart-section h2 {
+    color: #0f172a;
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin: 0 0 1.5rem 0;
+}
+
+.chart-container {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden; /* Strictly locks the chart SVG boundary */
+}
+
+.static-chart-svg {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    display: block;
+}
+
+.demo-note-bottom {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-style: italic;
+    margin: 1rem 0 0 0;
+    text-align: center;
+}
+
+/* Chart Legend Redesign */
+.legend {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+    padding-left: 80px; /* Aligns legend with axis */
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.bullet {
+    width: 25px;
+    height: 4px;
+    border-radius: 2px;
+}
+
+.remaining-bullet { background-color: #3b82f6; } /* Matching curve blue */
+.failure-bullet { background-color: #eab308; border-top: 2px dashed #eab308; background-color: transparent; } /* Matching warning yellow */
+
+.legend-text {
+    font-size: 0.9rem;
+    color: #475569;
+    font-weight: 600;
+}
+
+.error-msg {
+    color: #ef4444;
+    background: #fef2f2;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    position: absolute;
+    bottom: -40px;
+    left: 2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    .header-controls {
+        width: 100%;
+        max-width: 100%;
+        justify-content: space-between;
+    }
+    .summary-cards {
+        grid-template-columns: 1fr;
+    }
+    .legend {
+        padding-left: 0;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
