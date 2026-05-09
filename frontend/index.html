@@ -3,90 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Engine RUL Dashboard</title>
+    <title>Enterprise Predictive Maintenance</title>
+    <!-- Import Chart.js for dynamic graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="dashboard-container">
         
         <header class="dashboard-header">
-            <h1>Predictive Maintenance Dashboard</h1>
-            <div class="header-controls">
-                <input type="text" id="sensorData" placeholder="Enter current cycle data e.g., -0.0007, -0.0004, 100.0, ...">
-                <button id="predictBtn">Predict</button>
+            <div>
+                <h1>AeroEngine Diagnostics</h1>
+                <p class="subtitle">AI-Driven Remaining Useful Life (RUL) Prediction</p>
             </div>
-            <div id="loading" class="hidden header-loading">Processing telemetry...</div>
-            <div id="error" class="hidden error-msg"></div>
+            <div class="header-controls">
+                <input type="text" id="sensorData" placeholder="Paste 24 comma-separated sensor values...">
+                <button id="predictBtn">Run Diagnostics</button>
+            </div>
         </header>
 
-        <section class="summary-cards">
-            <div class="card total-cycles-card">
-                <div class="card-header">
-                    <span class="icon list-icon"></span> <h2>Total Cycles</h2>
-                </div>
-                <p class="card-value">2450</p>
-                <p class="demo-note">Demo: Static value</p>
-            </div>
+        <!-- Status Bar -->
+        <div id="loading" class="hidden alert-box info">Processing AI Telemetry...</div>
+        <div id="error" class="hidden alert-box danger"></div>
 
-            <div class="card failure-cycles-card">
-                <div class="card-header">
-                    <span class="icon warning-icon"></span> <h2>Failure Cycles</h2>
-                </div>
-                <p class="card-value">2732</p>
-                <p class="demo-note">Demo: Static value</p>
-            </div>
-
-            <div class="card rul-card" id="rulCard">
-                <div class="card-header">
-                    <span class="icon clock-icon"></span> <h2>Time to Failure</h2>
-                </div>
-                <p class="card-value" id="rulValue">-- <span class="unit">CYCLES</span></p>
-                <p class="demo-note">Demo: Real prediction from API</p>
-            </div>
-        </section>
-
-        <section class="chart-section">
-            <div class="panel">
-                <h2>Cycle Failure Predictions</h2>
-                <div class="chart-container">
-                    <svg viewBox="0 0 1000 400" class="static-chart-svg">
-                        <defs>
-                            <linearGradient id="curveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" style="stop-color: #3b82f6; stop-opacity: 0.8" />
-                                <stop offset="100%" style="stop-color: #3b82f6; stop-opacity: 0" />
-                            </linearGradient>
-                        </defs>
-                        
-                        <line x1="80" y1="350" x2="980" y2="350" stroke="#cbd5e1" stroke-width="1" />
-                        <line x1="80" y1="350" x2="80" y2="20" stroke="#cbd5e1" stroke-width="1" />
-                        
-                        <path d="M 80 20 C 150 20, 250 80, 450 150 C 650 220, 850 300, 980 340" fill="url(#curveGradient)" stroke="#3b82f6" stroke-width="3"/>
-                        <circle cx="80" cy="20" r="5" fill="#3b82f6" /> <path d="M 500 160 l 15 25 h -30 z" fill="#eab308" /> <line x1="500" y1="185" x2="500" y2="350" stroke="#eab308" stroke-dasharray="8,8" /> <rect x="530" y="110" width="220" height="70" rx="8" fill="#fef9c3" stroke="#fde047" stroke-width="1" />
-                        <text x="545" y="135" font-family="Segoe UI" font-size="16" fill="#854d0e">Engine expected to fail in</text>
-                        <text x="545" y="165" font-family="Segoe UI" font-size="20" font-weight="bold" fill="#0f172a">282 cycles</text>
-                        
-                        <text x="40" y="25" fill="#64748b" font-size="14">300</text>
-                        <text x="40" y="345" fill="#64748b" font-size="14">0</text>
-                        <text x="80" y="375" fill="#64748b" font-size="14">0</text>
-                        <text x="480" y="375" fill="#64748b" font-size="14" font-weight="bold">2450</text>
-                        <text x="960" y="375" fill="#64748b" font-size="14">2500</text>
-                        <text x="450" y="395" fill="#0f172a" font-weight="bold">Current Cycles</text>
-                    </svg>
-                    <p class="demo-note-bottom">Note: This chart is a visual placeholder for the demo.</p>
-                </div>
+        <div class="dashboard-grid">
+            <!-- Left Column: KPIs and XAI -->
+            <div class="left-column">
                 
-                <div class="legend">
-                    <div class="legend-item">
-                        <span class="bullet remaining-bullet"></span>
-                        <span class="legend-text">Remaining Cycles</span>
+                <!-- KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="card kpi-card" id="statusCard">
+                        <h3>System Status</h3>
+                        <h2 id="statusValue" class="kpi-value">STANDBY</h2>
                     </div>
-                    <div class="legend-item">
-                        <span class="bullet failure-bullet"></span>
-                        <span class="legend-text">Failure Point</span>
+                    <div class="card kpi-card" id="rulCard">
+                        <h3>Estimated RUL</h3>
+                        <h2 id="rulValue" class="kpi-value">--</h2>
+                        <p class="unit">Flight Cycles</p>
+                    </div>
+                </div>
+
+                <!-- Explainable AI Chart Area -->
+                <div class="card chart-card">
+                    <h3>Explainable AI (XAI) Root Cause Analysis</h3>
+                    <p class="chart-desc">Top sensors driving the current prediction</p>
+                    <div class="canvas-container xai-container">
+                        <canvas id="xaiChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Live Telemetry -->
+            <div class="right-column">
+                <div class="card chart-card full-height">
+                    <h3>Live Sensor Telemetry Signal</h3>
+                    <p class="chart-desc">Real-time snapshot of the 24 operational inputs</p>
+                    <div class="canvas-container telemetry-container">
+                        <canvas id="telemetryChart"></canvas>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+
     </div>
     <script src="script.js"></script>
 </body>
