@@ -7,9 +7,8 @@ document.getElementById('predictBtn').addEventListener('click', async () => {
     const dataInput = document.getElementById('sensorData').value;
     const features = dataInput.split(',').map(val => parseFloat(val.trim()));
 
-    // --- IMPORTANT: UPDATE THIS URL ---
-    // Change this to your current Ngrok HTTPS forwarding URL
-    const API_URL = 'https://YOUR_NGROK_URL_HERE.ngrok-free.app/predict';
+    // --- UPDATED FOR LOCAL HOSTING ---
+    const API_URL = 'http://127.0.0.1:8000/predict';
 
     if (features.length !== 24 || features.includes(NaN)) {
         alert("Error: Please provide exactly 24 valid numerical sensor readings.");
@@ -58,7 +57,7 @@ document.getElementById('predictBtn').addEventListener('click', async () => {
 
     } catch (error) {
         console.error("API Communication Error:", error);
-        alert("Failed to connect to the backend. Is Ngrok running?");
+        alert("Failed to connect to the backend. Is your FastAPI Python server running on port 8000?");
     } finally {
         // Reset Button
         btn.innerText = "Run Diagnostic Prediction";
