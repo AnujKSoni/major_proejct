@@ -3,70 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise Predictive Maintenance</title>
-    <!-- Import Chart.js for dynamic graphs -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Turbofan Predictive Maintenance</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts for a modern tech look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
-        
-        <header class="dashboard-header">
-            <div>
-                <h1>AeroEngine Diagnostics</h1>
-                <p class="subtitle">AI-Driven Remaining Useful Life (RUL) Prediction</p>
+        <header>
+            <div class="header-titles">
+                <h1>Turbofan Engine Diagnostics</h1>
+                <p class="subtitle">Engineered by Anuj Kumar Soni & Anshika Sawan</p>
             </div>
-            <div class="header-controls">
-                <input type="text" id="sensorData" placeholder="Paste 24 comma-separated sensor values...">
-                <button id="predictBtn">Run Diagnostics</button>
+            <div class="status-indicator">
+                <span class="pulse-dot"></span>
+                System Online
             </div>
         </header>
 
-        <!-- Status Bar -->
-        <div id="loading" class="hidden alert-box info">Processing AI Telemetry...</div>
-        <div id="error" class="hidden alert-box danger"></div>
-
-        <div class="dashboard-grid">
-            <!-- Left Column: KPIs and XAI -->
-            <div class="left-column">
-                
-                <!-- KPI Cards -->
-                <div class="kpi-grid">
-                    <div class="card kpi-card" id="statusCard">
-                        <h3>System Status</h3>
-                        <h2 id="statusValue" class="kpi-value">STANDBY</h2>
-                    </div>
-                    <div class="card kpi-card" id="rulCard">
-                        <h3>Estimated RUL</h3>
-                        <h2 id="rulValue" class="kpi-value">--</h2>
-                        <p class="unit">Flight Cycles</p>
-                    </div>
+        <main class="grid-layout">
+            <!-- Left Column: Input and Results -->
+            <section class="control-panel">
+                <div class="card input-card">
+                    <h2>Live Telemetry Input</h2>
+                    <p>Enter 24 comma-separated sensor readings:</p>
+                    <!-- Pre-filled with dummy data for easy testing -->
+                    <textarea id="sensorData" rows="4">51.06, 0.84, 130.03, 1052.84, 15.41, 10.36, 129.54, 521.89, 2388.11, 8125.55, 8.43, 0.03, 393.00, 2388.06, 8133.00, 8.35, 0.03, 393.00, 2388.00, 8133.00, 8.30, 0.03, 392.00, 2388.00</textarea>
+                    <button id="predictBtn" class="glow-on-hover">Run Diagnostic Prediction</button>
                 </div>
 
-                <!-- Explainable AI Chart Area -->
+                <div class="card result-card">
+                    <h2>Prognostic Results</h2>
+                    <div class="result-box">
+                        <span class="label">Predicted RUL:</span>
+                        <span id="rulValue" class="value">--</span> <span class="unit">Cycles</span>
+                    </div>
+                    <div class="result-box">
+                        <span class="label">System Status:</span>
+                        <span id="statusValue" class="value badge">STANDBY</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Column: Visualizations -->
+            <section class="visualization-panel">
                 <div class="card chart-card">
-                    <h3>Explainable AI (XAI) Root Cause Analysis</h3>
-                    <p class="chart-desc">Top sensors driving the current prediction</p>
-                    <div class="canvas-container xai-container">
+                    <h2>Explainable AI (XAI) Root Cause Analysis</h2>
+                    <div class="canvas-container">
                         <canvas id="xaiChart"></canvas>
                     </div>
                 </div>
 
-            </div>
-
-            <!-- Right Column: Live Telemetry -->
-            <div class="right-column">
-                <div class="card chart-card full-height">
-                    <h3>Live Sensor Telemetry Signal</h3>
-                    <p class="chart-desc">Real-time snapshot of the 24 operational inputs</p>
-                    <div class="canvas-container telemetry-container">
+                <div class="card chart-card">
+                    <h2>Real-Time Telemetry Wave</h2>
+                    <div class="canvas-container">
                         <canvas id="telemetryChart"></canvas>
                     </div>
                 </div>
-            </div>
-        </div>
-
+            </section>
+        </main>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
